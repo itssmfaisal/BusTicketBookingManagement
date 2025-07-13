@@ -1,8 +1,10 @@
 package com.ticketbooking.bus_ticket_booking_system.dto;
 
 import com.ticketbooking.bus_ticket_booking_system.model.Role;
+import com.ticketbooking.bus_ticket_booking_system.validation.AllowedRoles;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class UserSignupRequest {
@@ -17,6 +19,7 @@ public class UserSignupRequest {
     @Size(min = 8, message = "Password must be at least 8 characters.")
     private String password;
 
+    @AllowedRoles
     private Role role; // optional; can default if null
 
     // Getters and Setters
