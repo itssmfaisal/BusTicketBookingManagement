@@ -8,7 +8,11 @@ public enum Role {
     ROLE_STAFF;
 
     @JsonCreator
-    public static Role from(String role) {
-        return Role.valueOf("ROLE_" + role.toUpperCase()); // Prefix "ROLE_" to match enum constants
+    public static Role from(String value) {
+        try {
+            return Role.valueOf("ROLE_" + value.toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            return null; // Let validation handle the null
+        }
     }
 }

@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  mysqlbus:
+    image: mysql:8
+    container_name: bus-ticket-booking-db
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    ports:
+      - "3326:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: bus-ticket-booking-mailhog
+    ports:
+      - "8026:8025"   # Web UI
+      - "1026:1025"   # SMTP port
+
+  app:
+    build: .
+    container_name: bus-ticket-booking-app
+    depends_on:
+      - mysqlbus
+      - mailhog
+    ports:
+      - "8082:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqlbus:3306/test
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      SPRING_MAIL_HOST: mailhog
+      SPRING_MAIL_PORT: 1025
+    restart: on-failure
+
+volumes:
+  mysql_data:
