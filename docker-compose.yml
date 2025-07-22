@@ -35,5 +35,14 @@ services:
       SPRING_MAIL_PORT: 1025
     restart: on-failure
 
+  nginx:
+    image: nginx:latest
+    container_name: bus-ticket-booking-nginx
+    ports:
+      - "8070:80"
+    depends_on:
+      - app
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
 volumes:
   mysql_data:
